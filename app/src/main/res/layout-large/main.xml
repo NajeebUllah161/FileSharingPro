@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal">
+
+        <fragment
+            android:id="@+id/frag_list"
+            class="com.example.filesharingpro.DeviceListFragment"
+            android:layout_width="@dimen/tablet_list_width"
+            android:layout_height="match_parent">
+            <!-- Preview: layout=@layout/row_devices -->
+        </fragment>
+
+        <fragment
+            android:id="@+id/frag_detail"
+            class="com.example.filesharingpro.DeviceDetailFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <!-- Preview: layout=@layout/device_detail -->
+        </fragment>
+    </LinearLayout>
+</LinearLayout>
