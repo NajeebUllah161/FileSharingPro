@@ -1,4 +1,4 @@
-package com.example.filesharingpro.Utils
+package com.example.filesharingpro.helpers
 
 import android.content.Context
 import android.content.Intent

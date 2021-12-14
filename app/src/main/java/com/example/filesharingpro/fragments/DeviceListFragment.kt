@@ -1,4 +1,4 @@
-package com.example.filesharingpro
+package com.example.filesharingpro.fragments
 
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
@@ -18,6 +18,8 @@ import android.widget.TextView
 import android.widget.Toast
 //import androidx.fragment.app.ListFragment
 import android.app.ListFragment
+import com.example.filesharingpro.R
+import com.example.filesharingpro.activities.WiFiDirectActivity
 import java.util.ArrayList
 
 

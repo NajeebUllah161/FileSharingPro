@@ -1,4 +1,4 @@
-package com.example.filesharingpro
+package com.example.filesharingpro.broadcast
 
 import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
@@ -10,6 +10,10 @@ import android.net.wifi.p2p.WifiP2pManager
 import android.net.wifi.p2p.WifiP2pManager.PeerListListener
 import android.os.Parcelable
 import android.util.Log
+import com.example.filesharingpro.R
+import com.example.filesharingpro.activities.WiFiDirectActivity
+import com.example.filesharingpro.fragments.DeviceDetailFragment
+import com.example.filesharingpro.fragments.DeviceListFragment
 
 /**
  * A BroadcastReceiver that notifies of important wifi p2p events.

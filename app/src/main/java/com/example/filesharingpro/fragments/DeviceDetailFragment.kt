@@ -1,4 +1,4 @@
-package com.example.filesharingpro
+package com.example.filesharingpro.fragments
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -26,8 +26,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.FileProvider
-import com.example.filesharingpro.Utils.FilesUtil
-import com.example.filesharingpro.Utils.PathUtil
+import com.example.filesharingpro.R
+import com.example.filesharingpro.helpers.FilesUtil
+import com.example.filesharingpro.helpers.PathUtil
+import com.example.filesharingpro.activities.WiFiDirectActivity
+import com.example.filesharingpro.service.FileTransferService
 import java.io.*
 import java.net.InetSocketAddress
 import java.net.ServerSocket
@@ -36,7 +39,6 @@ import java.util.ArrayList
 import java.util.concurrent.Executors
 
 class DeviceDetailFragment : Fragment(), WifiP2pManager.ConnectionInfoListener {
-
 
     private var mContentView: View? = null
     private var device: WifiP2pDevice? = null
@@ -93,7 +95,8 @@ class DeviceDetailFragment : Fragment(), WifiP2pManager.ConnectionInfoListener {
                 "Press back to cancel",
                 "Connecting to :" + device!!.deviceAddress,
                 true,
-                true //                        new DialogInterface.OnCancelListener() {
+                true
+                //                        new DialogInterface.OnCancelListener() {
                 //
                 //                            @Override
                 //                            public void onCancel(DialogInterface dialog) {
@@ -105,10 +108,13 @@ class DeviceDetailFragment : Fragment(), WifiP2pManager.ConnectionInfoListener {
         }
         // Disconnect with user
         mContentView!!.findViewById<View>(R.id.btn_disconnect)
-            .setOnClickListener { v: View? -> (activity as DeviceListFragment.DeviceActionListener?)?.disconnect() }
+            .setOnClickListener {
+                (activity as DeviceListFragment.DeviceActionListener?)?.disconnect()
+
+            }
 
         // Selecting Image Intent
-        mContentView!!.findViewById<View>(R.id.btn_start_client).setOnClickListener { v: View? ->
+        mContentView!!.findViewById<View>(R.id.btn_start_client).setOnClickListener {
             // Allow user to pick an image from Gallery or other
             // registered apps
             val intent = Intent(Intent.ACTION_GET_CONTENT)
@@ -148,11 +154,11 @@ class DeviceDetailFragment : Fragment(), WifiP2pManager.ConnectionInfoListener {
     }
 
     // Send Files to connected device using P2P technology
-    fun sendFiles() {
+    private fun sendFiles() {
 
-//        TextView statusText = (TextView) mContentView.findViewById(R.id.status_text);
-//        statusText.setText("Sending: " + image);
-//        Log.d(WiFiDirectActivity.TAG, "Intent----------- " + uri);
+        // TextView statusText = (TextView) mContentView.findViewById(R.id.status_text);
+        // statusText.setText("Sending: " + image);
+        // Log.d(WiFiDirectActivity.TAG, "Intent----------- " + uri);
         if (!(fileNames.isEmpty() && filesLength.isEmpty() && mArrayUri!!.isEmpty())) {
             val serviceIntent = Intent(activity, FileTransferService::class.java)
             serviceIntent.action = FileTransferService.ACTION_SEND_FILE
@@ -165,7 +171,7 @@ class DeviceDetailFragment : Fragment(), WifiP2pManager.ConnectionInfoListener {
             serviceIntent.putStringArrayListExtra(FileTransferService.EXTRAS_FILE_NAME, fileNames)
             serviceIntent.putExtra(FileTransferService.EXTRAS_FILE_LENGTH, filesLength)
 
-//        Log.d(WiFiDirectActivity.TAG, "ArrayList of Uri " + mArrayUri.toString());
+            // Log.d(WiFiDirectActivity.TAG, "ArrayList of Uri " + mArrayUri.toString());
             if (info!!.isGroupOwner) {
                 serviceIntent.putExtra(
                     FileTransferService.EXTRAS_GROUP_OWNER_ADDRESS,
@@ -181,9 +187,9 @@ class DeviceDetailFragment : Fragment(), WifiP2pManager.ConnectionInfoListener {
                 Log.d("Checkpoint", "I am Group Member")
             }
             serviceIntent.putExtra(FileTransferService.EXTRAS_GROUP_OWNER_PORT, 8988)
-//            requireActivity().startService(serviceIntent)
-
-            //            getActivity().startService(serviceIntent);
+            // requireActivity().startService(serviceIntent)
+            // getActivity().startService(serviceIntent);
+            /** Starting service **/
             FileTransferService.enqueueWork(activity, serviceIntent)
         } else {
             Toast.makeText(activity, "Please Select Files First.", Toast.LENGTH_SHORT).show()
@@ -413,6 +419,8 @@ class DeviceDetailFragment : Fragment(), WifiP2pManager.ConnectionInfoListener {
      * Clears the UI fields after a disconnect or direct mode disable operation.
      */
     fun resetViews() {
+
+        // mContentView!!.findViewById<View>(R.id.device_details_fragment).visibility = View.GONE
         mContentView!!.findViewById<View>(R.id.btn_connect).visibility = View.VISIBLE
         var view = mContentView!!.findViewById<TextView>(R.id.device_address)
         view.setText(R.string.empty)
@@ -569,11 +577,11 @@ class DeviceDetailFragment : Fragment(), WifiP2pManager.ConnectionInfoListener {
                      * context.startActivity(intent);
                      */
 
-//                    Kotlin code
-//                    val intent = Intent(android.content.Intent.ACTION_VIEW).apply {
-//                        setDataAndType(Uri.parse("file://$result"), "image/*")
-//                    }
-//                    context.startActivity(intent)
+                    // Kotlin code
+                    // val intent = Intent(android.content.Intent.ACTION_VIEW).apply {
+                    // setDataAndType(Uri.parse("file://$result"), "image/*")
+                    // }
+                    // context.startActivity(intent)
                 }
             }
 

@@ -1,4 +1,4 @@
-package com.example.filesharingpro
+package com.example.filesharingpro.service
 
 //import android.app.IntentService
 import android.content.Context
@@ -10,6 +10,7 @@ import android.os.Parcelable
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.JobIntentService
+import com.example.filesharingpro.activities.WiFiDirectActivity
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.io.InputStream
@@ -56,12 +57,12 @@ class FileTransferService : JobIntentService() {
                 intent.getSerializableExtra(EXTRAS_FILE_LENGTH) as ArrayList<Long>?
             val fileNames = intent.getStringArrayListExtra(EXTRAS_FILE_NAME)
             var len: Int
-//            Reduce buffer size to check change in speed.
+            // Reduce buffer size to check change in speed.
             val buf = ByteArray(8192)
 
             Log.d("NajeebFileTransferService", fileUri.toString());
             Log.d("NajeebFileTransferService", fileUri?.get(0).toString())
-            //Checkpoint
+
             val host = intent.extras!!.getString(EXTRAS_GROUP_OWNER_ADDRESS)
             val socket = Socket()
             val port = intent.extras!!.getInt(EXTRAS_GROUP_OWNER_PORT)
@@ -75,9 +76,9 @@ class FileTransferService : JobIntentService() {
                 val cr = context.contentResolver
                 objectOutputStream.writeInt(fileUri!!.size)
                 objectOutputStream.writeObject(fileNames)
-                //                objectOutputStream.flush();
+                // objectOutputStream.flush();
                 objectOutputStream.writeObject(filesLength)
-                //                objectOutputStream.flush();
+                // objectOutputStream.flush();
                 var inputStream: InputStream? = null
                 var i = 1
                 for (singleUri in fileUri) {
@@ -92,9 +93,9 @@ class FileTransferService : JobIntentService() {
                         Log.d(WiFiDirectActivity.TAG, e.toString())
                     }
                     publishResults(i)
-                    //                    Log.d("FileProgressSender", String.valueOf(i));
+                    // Log.d("FileProgressSender", String.valueOf(i));
                     i++
-                    //                    DeviceDetailFragment.copyFile(inputStream, outputStream);
+                    // DeviceDetailFragment.copyFile(inputStream, outputStream);
                 }
                 // close output stream one time from sender side
                 objectOutputStream.flush()
@@ -123,7 +124,7 @@ class FileTransferService : JobIntentService() {
     val mHandler: Handler = Handler(Looper.getMainLooper())
 
     // Helper for showing tests
-    fun toast(text: CharSequence?) {
+    private fun toast(text: CharSequence?) {
         mHandler.post(Runnable {
             Toast.makeText(
                 this@FileTransferService,

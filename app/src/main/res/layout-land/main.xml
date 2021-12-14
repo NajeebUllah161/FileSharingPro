@@ -12,7 +12,7 @@
 
         <fragment
             android:id="@+id/frag_list"
-            class="com.example.filesharingpro.DeviceListFragment"
+            class="com.example.filesharingpro.fragments.DeviceListFragment"
             android:layout_width="@dimen/phone_list_height"
             android:layout_height="match_parent">
             <!-- Preview: layout=@layout/row_devices -->
@@ -20,7 +20,7 @@
 
         <fragment
             android:id="@+id/frag_detail"
-            class="com.example.filesharingpro.DeviceDetailFragment"
+            class="com.example.filesharingpro.fragments.DeviceDetailFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <!-- Preview: layout=@layout/device_detail -->

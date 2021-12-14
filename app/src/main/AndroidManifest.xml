@@ -28,7 +28,7 @@
         android:supportsRtl="true"
         android:theme="@android:style/Theme.Holo">
         <activity
-            android:name=".WiFiDirectActivity"
+            android:name=".activities.WiFiDirectActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:launchMode="singleTask">
@@ -52,7 +52,7 @@
 
         <!-- Used for transferring files  after a successful connection -->
         <service
-            android:name=".FileTransferService"
+            android:name=".service.FileTransferService"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:enabled="true" />
 

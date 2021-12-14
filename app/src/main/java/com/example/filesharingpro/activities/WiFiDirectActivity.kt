@@ -1,4 +1,4 @@
-package com.example.filesharingpro
+package com.example.filesharingpro.activities
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -19,8 +19,10 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-
+import com.example.filesharingpro.R
+import com.example.filesharingpro.broadcast.WiFiDirectBroadcastReceiver
+import com.example.filesharingpro.fragments.DeviceDetailFragment
+import com.example.filesharingpro.fragments.DeviceListFragment
 
 class WiFiDirectActivity : Activity(), WifiP2pManager.ChannelListener,
     DeviceListFragment.DeviceActionListener {
@@ -37,28 +39,41 @@ class WiFiDirectActivity : Activity(), WifiP2pManager.ChannelListener,
         private const val PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION = 1001
     }
 
+    @SuppressLint("ObsoleteSdkInt")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.main)
+
+        // add necessary intent values to be matched.
+
+        // manager.removeGroup(channel,null);
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION)
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION)
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION)
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION)
+
+        if (!initP2p()) {
+            finish()
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+            && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissions(
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION
+            )
+            // After this point you wait for callback in
+            // onRequestPermissionsResult(int, String[], int[]) overridden method
+        }
+    }
+
     /**
      * @param isWifiP2pEnabled the isWifiP2pEnabled to set
      */
     fun setIsWifiP2pEnabled(isWifiP2pEnabled: Boolean) {
         this.isWifiP2pEnabled = isWifiP2pEnabled
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION -> if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                Log.e(
-                    TAG,
-                    "Fine location permission is not granted!"
-                )
-                finish()
-            }
-        }
     }
 
     private fun initP2p(): Boolean {
@@ -106,33 +121,20 @@ class WiFiDirectActivity : Activity(), WifiP2pManager.ChannelListener,
         return true
     }
 
-    @SuppressLint("ObsoleteSdkInt")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.main)
-
-        // add necessary intent values to be matched.
-
-        // manager.removeGroup(channel,null);
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION)
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION)
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION)
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION)
-
-        if (!initP2p()) {
-            finish()
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-            && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            requestPermissions(
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                Companion.PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION
-            )
-            // After this point you wait for callback in
-            // onRequestPermissionsResult(int, String[], int[]) overridden method
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION -> if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                Log.e(
+                    TAG,
+                    "Fine location permission is not granted!"
+                )
+                finish()
+            }
         }
     }
 
@@ -279,11 +281,12 @@ class WiFiDirectActivity : Activity(), WifiP2pManager.ChannelListener,
 
     override fun cancelDisconnect() {
 
-        /*
+        /**
          * A cancel abort request by user. Disconnect i.e. removeGroup if
          * already connected. Else, request WifiP2pManager to abort the ongoing
          * request
-         */if (manager != null) {
+         */
+        if (manager != null) {
             val fragment = fragmentManager
                 .findFragmentById(R.id.frag_list) as DeviceListFragment
             if (fragment.getDevice() == null
@@ -311,5 +314,9 @@ class WiFiDirectActivity : Activity(), WifiP2pManager.ChannelListener,
                 })
             }
         }
+    }
+
+    fun saveProfileInformation(view: View) {
+        Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show();
     }
 }

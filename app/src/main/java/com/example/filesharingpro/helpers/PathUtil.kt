@@ -1,4 +1,4 @@
-package com.example.filesharingpro.Utils
+package com.example.filesharingpro.helpers
 
 import android.annotation.SuppressLint
 import android.content.ContentUris
