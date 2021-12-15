@@ -4,34 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingTop="3dp">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/username"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="username" />
-
-        <EditText
-            android:id="@+id/avatar_index"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="avatar Index" />
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/save_profile_info"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:onClick="saveProfileInformation"
-        android:text="Save" />
-
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
