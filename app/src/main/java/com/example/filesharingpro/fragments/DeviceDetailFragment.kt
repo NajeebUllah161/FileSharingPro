@@ -350,7 +350,6 @@ class DeviceDetailFragment : Fragment(), WifiP2pManager.ConnectionInfoListener {
         }
     }
 
-
     override fun onConnectionInfoAvailable(info: WifiP2pInfo) {
         if (progressDialog != null && progressDialog!!.isShowing) {
             progressDialog!!.dismiss()
@@ -458,7 +457,6 @@ class DeviceDetailFragment : Fragment(), WifiP2pManager.ConnectionInfoListener {
      * A simple server socket that accepts connection and writes some data on
      * the stream.
      */
-
 
     companion object {
 

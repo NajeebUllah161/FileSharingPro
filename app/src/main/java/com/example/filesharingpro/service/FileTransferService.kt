@@ -121,7 +121,7 @@ class FileTransferService : JobIntentService() {
         toast("All work complete")
     }
 
-    val mHandler: Handler = Handler(Looper.getMainLooper())
+    private val mHandler: Handler = Handler(Looper.getMainLooper())
 
     // Helper for showing tests
     private fun toast(text: CharSequence?) {
